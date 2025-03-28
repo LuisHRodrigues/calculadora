@@ -1,9 +1,18 @@
-package com.ifgoiano.br.edu.calculadora;
+
+/*
+ * Aluno: Luis Henrique Rodrigues de Oliveira
+ * Data de criação: 25/03/2025
+ */
+
+package br.edu.ifgoiano.urutai.controller;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import br.edu.ifgoiano.urutai.utils.NumConverter;
+import br.edu.ifgoiano.urutai.exceptions.UnsupportedMathOperationException;
+import br.edu.ifgoiano.urutai.models.*;
 
 @RestController
 public class MathController {
@@ -33,7 +42,7 @@ public class MathController {
     }
 
     // ************** Metodo de soma **************
-    // Defindo um endpoint GET para somar dois números passados na URL
+    // Defindo um endpoint GET para somar dois números passados na UL
     @RequestMapping(value = "/sum/{number1}/{number2}", method = RequestMethod.GET)
     public Double sum(@PathVariable(value = "number1") String number1,
             @PathVariable(value = "number2") String number2) throws Exception {
@@ -95,5 +104,17 @@ public class MathController {
                 NumConverter.convertToDouble(number2));
 
     } // ************** Fim metodo de media dos numeros**************
+
+    @RequestMapping(value = "/root/{number}", method = RequestMethod.GET)
+    public Double root(@PathVariable(value = "number") String number) throws Exception {
+
+        // Verifica se o valor recebido é numéricos
+        if (!NumConverter.isNumeric(number)) {
+            throw new UnsupportedMathOperationException("Por favor, coloque um valor numérico!");
+        }
+
+        // Converte o valor para double e realiza a raiz quadrada do numero
+        return math.squadRoot(NumConverter.convertToDouble(number));
+    }
 
 }
